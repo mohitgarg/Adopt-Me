@@ -10,7 +10,7 @@
       }
     ]
   ],
-  "plugins": ["@babel/plugin-proposal-class-properties", "@babel/plugin-transform-spread"],
+  "plugins": ["@babel/plugin-proposal-class-properties"],
   "env": {
     "test": {
       "plugins": ["transform-es2015-modules-commonjs"]
