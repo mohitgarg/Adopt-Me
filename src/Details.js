@@ -11,7 +11,7 @@ const petfinder = pf({
 class Details extends Component {
   state = {
     loading: true,
-    showModal: true
+    showModal: false
   };
 
   toggleModal = () => this.setState({ showModal: !this.state.showModal });
@@ -45,7 +45,7 @@ class Details extends Component {
 
   render() {
     if (this.state.loading) {
-      return <h1>loading … </h1>;
+      return <h1>Loading...</h1>;
     }
 
     const {
