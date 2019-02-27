@@ -11,13 +11,27 @@ import Details from "./Details";
 import SearchParams from "./SearchParams";
 import Navbar from "./Navbar";
 
+if (!process.env.API_KEY || !process.env.API_SECRET) {
+  throw new Error("No API Key or Secret Exist");
+}
+
 const petfinder = pf({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET
 });
+interface State {
+  location: string;
+  animal: string;
+  breed: string;
+  breeds: string[];
+  handleAnimalChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleBreedChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleLocationChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  getBreeds: () => void;
+}
 
-class App extends React.Component {
-  constructor(props) {
+class App extends React.Component<{},State> {
+  constructor(props:{}) {
     super(props);
 
     this.state = {
@@ -31,29 +45,29 @@ class App extends React.Component {
       getBreeds: this.getBreeds
     };
   }
-  handleLocationChange = event => {
+  public handleLocationChange = (event:React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       location: event.target.value
     });
   };
 
-  handleAnimalChange = event => {
+  public handleAnimalChange = (event:React.ChangeEvent<HTMLSelectElement>) => {
     this.setState(
       {
         animal: event.target.value,
         breed: ""
       },
-      this.getBreed
+      this.getBreeds
     );
   };
 
-  handleBreedChange = event => {
+  public handleBreedChange = (event:React.ChangeEvent<HTMLSelectElement>) => {
     this.setState({
       breed: event.target.value
     });
   };
 
-  getBreed() {
+  public getBreeds() {
     if (this.state.animal) {
       petfinder.breed.list({ animal: this.state.animal }).then(data => {
         if (
@@ -70,7 +84,7 @@ class App extends React.Component {
       this.setState({ breeds: [] });
     }
   }
-  render() {
+  public render() {
     return (
       <div>
         <Navbar />
