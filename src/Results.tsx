@@ -1,10 +1,9 @@
 import React from "react";
-import pf,{Pet as PetType} from "petfinder-client";
+import pf, { Pet as PetType } from "petfinder-client";
 import Pet from "./Pet";
 import SearchBox from "./SearchBox";
 import { Consumer } from "./SearchContext";
-import {RouteComponentProps} from 'reach__router'
-
+import { RouteComponentProps } from "reach__router";
 
 if (!process.env.API_KEY || !process.env.API_SECRET) {
   throw new Error("No API Key or Secret Exist");
@@ -15,20 +14,19 @@ const petfinder = pf({
 });
 
 interface Props {
-  searchParams:{
-    location:string,
-    animal:string,
-    breed:string
-  }
-
+  searchParams: {
+    location: string;
+    animal: string;
+    breed: string;
+  };
 }
 
 interface State {
-  pets:PetType[]
+  pets: PetType[];
 }
 
 class Results extends React.Component<Props, State> {
-  constructor(props:Props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       pets: []
@@ -43,7 +41,7 @@ class Results extends React.Component<Props, State> {
     petfinder.pet
       .find({ output: "full", location, animal, breed })
       .then(data => {
-        let pets:PetType[];
+        let pets: PetType[];
         if (data.petfinder.pets && data.petfinder.pets.pet) {
           if (Array.isArray(data.petfinder.pets.pet)) {
             pets = data.petfinder.pets.pet;
@@ -53,8 +51,7 @@ class Results extends React.Component<Props, State> {
         } else {
           pets: [];
         }
-        // @ts-ignore
-        this.setState({ pets });
+        this.setState({ pets: [] });
       });
   };
 
@@ -86,7 +83,7 @@ class Results extends React.Component<Props, State> {
   }
 }
 
-export default function ResultWithContext(props:RouteComponentProps) {
+export default function ResultWithContext(props: RouteComponentProps) {
   return (
     <Consumer>
       {context => <Results {...props} searchParams={context} />}
